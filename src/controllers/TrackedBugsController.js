@@ -1,0 +1,25 @@
+import { Auth0Provider } from "@bcwdev/auth0provider";
+import BaseController from "../utils/BaseController.js";
+import { trackedBugsService } from "../services/TrackedBugsService.js";
+
+
+
+export class TrackedBugsController extends BaseController {
+  constructor() {
+    super('api/trackedbugs')
+    this.router
+      .use(Auth0Provider.getAuthorizedUserInfo)
+  }
+
+  async createTrackedBug(request, response, next) {
+    try {
+      const trackedBugData = request.body
+      trackedBugData.trackerId = request.userInfo.id
+      const newTrackedBug = await trackedBugsService.createTrackedBug(trackedBugData)
+      response.send(newTrackedBug)
+
+    } catch (error) {
+      next(error)
+    }
+  }
+}
