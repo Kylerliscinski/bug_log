@@ -43,7 +43,7 @@ class BugsService {
 
     await bugToDelete.deleteOne()
 
-    return `${bugToDelete.title} was deleted`
+    return bugToDelete
   }
 }
 export const bugsService = new BugsService()
